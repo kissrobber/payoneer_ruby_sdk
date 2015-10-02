@@ -1,0 +1,1 @@
+require "payoneer/version"
