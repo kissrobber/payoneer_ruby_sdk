@@ -3,11 +3,12 @@ module Payoneer
     # Payoneer::Api::GetToken.request(payee_id: 1000011)
     module GetToken
       include Payoneer::Api::Core
-      def self.to_api_params(payee_id: nil)
-        { p4: payee_id }
-      end
-      def self.to_response(response)
-        response
+      def self.to_api_params(payee_id: nil, approved: true)
+        {
+          p4: payee_id,
+          p9: approved,
+          p10: true
+        }
       end
     end
   end

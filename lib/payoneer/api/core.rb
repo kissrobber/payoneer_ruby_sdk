@@ -13,8 +13,9 @@ module Payoneer
         end
         def to_response(response)
           hash_response = Hash.from_xml(response.body)
+          content_name = hash_response.keys.first
           inner_content = hash_response.values.first
-          ::Payoneer::Response.new inner_content
+          ::Payoneer::Response.new content_name, inner_content
         end
 
         def request(params = {})

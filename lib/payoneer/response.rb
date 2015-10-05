@@ -2,8 +2,9 @@ module Payoneer
   class Response < OpenStruct
     OK_STATUS_CODE = '000'
 
-    def initialize(hash)
+    def initialize(name, hash)
       super(convert_hash_keys(hash))
+      self.response_name = name
     end
 
     def convert_hash_keys(value)
@@ -18,7 +19,11 @@ module Payoneer
     end
 
     def ok?
-      self.status == OK_STATUS_CODE
+      if self.response_name == 'GetPaymentStatus'
+        self.result == OK_STATUS_CODE
+      else
+        self.status == OK_STATUS_CODE
+      end
     end
   end
 end
