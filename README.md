@@ -49,6 +49,7 @@ Payoneer::Api::GetVersion.request
 #### Payee Sign-up
 ```ruby
 Payoneer::Api::GetToken.request(payee_id: 1000011)
+Payoneer::Api::GetToken.request(payee_id: 1000011, payout_methods: 'prepaidcard')
 ```
 
 #### Payee Sign-up / Auto Population
