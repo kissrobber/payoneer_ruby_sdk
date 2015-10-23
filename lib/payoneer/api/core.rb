@@ -25,11 +25,33 @@ module Payoneer
 
           request_params = default_params.merge(mname: method_name).merge(params)
 
-          response = RestClient.post(config.api_url, request_params)
+          request = Request.new(config)
+          response = request.execute(request_params)
 
           fail Errors::ApiError.new(response.code, response.body) unless response.code == 200
 
           to_response(response)
+        end
+
+        class Request
+          attr_accessor :max_attempts, :num_attempts, :config
+          def initialize(config)
+            self.config = config
+            self.max_attempts = config.proxy.size
+            self.num_attempts = 0
+          end
+          def execute(request_params)
+            self.num_attempts += 1
+            config.setup_proxy_if_set
+            RestClient.post(config.api_url, request_params)
+          rescue RestClient::RequestTimeout => e
+            # if Net::OpenTimeout === e.original_exception &&
+            if self.max_attempts > self.num_attempts
+              config.rotate_proxy
+              retry
+            end
+            raise e
+          end
         end
 
         def config
