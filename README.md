@@ -26,7 +26,8 @@ Payoneer.configure({
   partner_api_password: '<payoneer_api_password>',
   partner_id: '<payoneer_partner_id>',
   program_id: '<payoneer_program_id>',
-  env: 'production'
+  env: 'production',
+  proxy: 'http://example.com' # optional
 })
 ```
 
